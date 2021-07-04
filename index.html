@@ -4,21 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SkyWay - Room example</title>
+  <title>💬 Simple Text Chat Room</title>
   <link rel="stylesheet" href="../_shared/style.css">
 </head>
 
 <body>
   <div class="container">
-    <h1 class="heading">Room example</h1>
-    <p class="note">
-      Change Room mode (before join in a room):
-      <a href="#">mesh</a> / <a href="#sfu">sfu</a>
-    </p>
+    <h1 class="heading">💬 Simple Text Chat Room</h1>
     <div class="room">
       <div>
-        <video id="js-local-stream"></video>
-        <span id="js-room-mode"></span>:
+        <span>Room</span>:
         <input type="text" placeholder="Room Name" id="js-room-id">
         <button id="js-join-trigger">Join</button>
         <button id="js-leave-trigger">Leave</button>
@@ -32,10 +27,8 @@
         <button id="js-send-trigger">Send</button>
       </div>
     </div>
-    <p class="meta" id="js-meta"></p>
   </div>
   <script src="//cdn.webrtc.ecl.ntt.com/skyway-4.4.1.js"></script>
-  <!-- <script src="../_shared/key.js"></script> -->
   <script src="./script.js"></script>
 </body>
 
