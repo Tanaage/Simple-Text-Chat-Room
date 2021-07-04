@@ -54,6 +54,14 @@ function massageData(user, text) {
       messages.textContent += '=== You left ===\n';
     });
 
+    // send by enter-key
+    localText.addEventListener('keypress', e => {
+      if (e.key === 'Enter') {
+        onClickSend();
+      }
+      return false;
+    });
+
     sendTrigger.addEventListener('click', onClickSend);
     leaveTrigger.addEventListener('click', () => { userId.disabled = false; room.close(), { once: true } });
 
