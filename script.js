@@ -1,6 +1,6 @@
 const Peer = window.Peer;
 
-window.__SKYWAY_KEY__ = '<YOUR_KEY_HERE>';
+window.__SKYWAY_KEY__ = '7f6811d4-2b08-4bd7-8be8-cd036923e473';
 
 (async function main() {
   const localVideo = document.getElementById('js-local-stream');
