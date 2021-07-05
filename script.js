@@ -71,7 +71,7 @@ function massageData(user, text) {
       // Send message to all of the peers in the room via websocket
       room.send(msg);
 
-      messages.textContent += `${user_name}: ${localText.value}\n`;
+      messages.textContent += `@${user_name}(You): ${localText.value}\n`;
       localText.value = '';
     }
   });
