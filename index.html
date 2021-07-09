@@ -1,37 +1,113 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="ja">
 
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <!-- Font Awesome CSS -->
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
+  <link href="./style.css" rel="stylesheet">
+  <!-- <script src="//cdn.webrtc.ecl.ntt.com/skyway-4.4.1.js"></script>
+  <script src="./script.js"></script> -->
+
   <title>💬 Simple Text Chat Room</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
 <body>
   <div class="container">
-    <h1 class="heading">💬 Simple Text Chat Room</h1>
-    <div class="room">
-      <div>
-        <h2>User Name:</h2>
-        <input type="text" placeholder="名無し" id="js-user-id">
-      </div>
-      <div>
-        <h2>Room:</h2>
-        <input type="text" placeholder="Room Name" id="js-room-id">
-        <button id="js-join-trigger">Join</button>
-        <button id="js-leave-trigger">Leave</button>
-      </div>
-      <br>
+    <div class="chat">
+      <div class="card">
+        <div class="card-header msg_head">
+          <div class="d-flex bd-highlight">
+            <div class="img_cont">
+              <img src="https://pbs.twimg.com/media/Eb0oeQEUMAAgX68.jpg" class="rounded-circle user_img">
+              <!-- <span class="online_icon"></span> -->
+            </div>
+            <div class="room_info">
+              <div class="room_info d-flex bd-highlight">
+                <input class="form-control type_name" placeholder="User Name" id="js-user-id">
+              </div>
+              <div class="room_info d-flex bd-highlight">
+                <div class="input-group">
+                  <input class="form-control type_room" placeholder="Room Name" id="js-room-id">
+                  <div class="input-group-append">
+                    <button id="js-join-trigger" class="input-group-text join_btn" type="button">Join</button>
+                  </div>
+                </div>
 
-      <div>
-        <h2>Message:</h2>
-        <pre class="messages" id="js-messages"></pre>
-        <input type="text" id="js-local-text">
-        <button id="js-send-trigger">Send</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body msg_card_body">
+          <pre class="messages" id="js-messages"></pre>
+
+          <div class="d-flex justify-content-start mb-4">
+            <div class="img_cont_msg">
+              <img src="https://pbs.twimg.com/profile_images/1210137605234278400/IAozvMHj.jpg"
+                class="rounded-circle user_img_msg">
+            </div>
+            <div class="msg_cotainer">
+              ううっ...
+              <span class="msg_time">8:40 AM, Today</span>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end mb-4">
+            <div class="msg_cotainer_send">
+              なにーーー
+              <span class="msg_time_send">8:55 AM, Today</span>
+            </div>
+            <div class="img_cont_msg">
+              <img
+                src="https://lh3.googleusercontent.com/proxy/2ueHSlMIdsOfujjNSzOb_uwteB5Si3ZVhMY4Il1BI1w3kWyEAxcpHkB3iSBKPP5EeBunkgHoI26JsOr5zH4vnnYB-Kie-B4nCn3_vjOwhX2-rg"
+                class="rounded-circle user_img_msg">
+            </div>
+          </div>
+          <div class="d-flex justify-content-start mb-4">
+            <div class="img_cont_msg">
+              <img src="https://pbs.twimg.com/profile_images/1210137605234278400/IAozvMHj.jpg"
+                class="rounded-circle user_img_msg">
+            </div>
+            <div class="msg_cotainer">
+              わァッ...わァ...わァ
+              <span class="msg_time">9:00 AM, Today</span>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end mb-4">
+            <div class="msg_cotainer_send">
+              どういうこと?
+              <span class="msg_time_send">9:05 AM, Today</span>
+            </div>
+            <div class="img_cont_msg">
+              <img
+                src="https://lh3.googleusercontent.com/proxy/2ueHSlMIdsOfujjNSzOb_uwteB5Si3ZVhMY4Il1BI1w3kWyEAxcpHkB3iSBKPP5EeBunkgHoI26JsOr5zH4vnnYB-Kie-B4nCn3_vjOwhX2-rg"
+                class="rounded-circle user_img_msg">
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="input-group">
+            <input name="" class="form-control type_msg" placeholder="Type your message..." id="js-local-text">
+            <div class="input-group-append">
+              <span class="input-group-text send_btn" id="js-send-trigger"><i class="fas fa-location-arrow"></i></span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
   </div>
   <script src="//cdn.webrtc.ecl.ntt.com/skyway-4.4.1.js"></script>
   <script src="./script.js"></script>

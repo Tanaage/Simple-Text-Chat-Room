@@ -70,6 +70,11 @@ function massageData(user, text) {
       msg.user = user_name;
       // Send message to all of the peers in the room via websocket
       room.send(msg);
+      // main.scrollTop = main.scrollHeight;
+      // scrollEnd();
+      var element = document.getElementById("msg_id");
+      var positionY = element.offsetTop; // 変更点
+      element.scrollTo(0, positionY);
 
       messages.textContent += `@${user_name}(You): ${localText.value}\n`;
       localText.value = '';
