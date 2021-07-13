@@ -1,10 +1,5 @@
 const Peer = window.Peer;
 
-function massageData(user, text) {
-  this.user = '';
-  this.text = '';
-}
-
 (async function main() {
   const joinTrigger = document.getElementById('js-join-trigger');
   const leaveTrigger = document.getElementById('js-leave-trigger');
@@ -17,7 +12,8 @@ function massageData(user, text) {
 
   const peer = (window.peer = new Peer({ key: '7f6811d4-2b08-4bd7-8be8-cd036923e473', }));
 
-  let msg = new massageData('名無し', '');
+  const msg = {type:"chat",user: "名無し", text:""}
+  const systemMsg = {type:"system",text:""}
 
   // Register join handler
   joinTrigger.addEventListener('click', () => {
@@ -44,7 +40,16 @@ function massageData(user, text) {
 
     room.on('peerJoin', peerId => { messages.textContent += `=== ${peerId} joined ===\n`; });
 
-    room.on('data', ({ data, src }) => { messages.textContent += `${currentDate()}:@${data.user}(${src}): ${data.text}\n`; });// Show a message sent to the room and who sent
+    room.on('data', ({ data, src }) => { 
+      console.log(data)
+      if(data.type === `chat`){
+      messages.textContent += `${currentDate()}:@${data.user}(${src}): ${data.text}\n`;
+      const systemMsg = {type:"system",text:"既読"}
+      room.send(systemMsg);
+    
+    }
+     });// Show a message sent to the room and who sent
+
 
     // for closing room members
     room.on('peerLeave', peerId => { messages.textContent += `=== ${peerId} left ===\n`; });
