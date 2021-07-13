@@ -7,6 +7,12 @@
   <title>💬 Simple Text Chat Room</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+      #message-error-message{
+        color :crimson;
+      }
+    </style>
 </head>
 
 <body>
@@ -30,6 +36,7 @@
         <pre class="messages" id="js-messages"></pre>
         <input type="text" id="js-local-text">
         <button id="js-send-trigger">Send</button>
+        <p id="message-error-message"></p>
       </div>
     </div>
   </div>

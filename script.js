@@ -13,6 +13,7 @@ function massageData(user, text) {
   const sendTrigger = document.getElementById('js-send-trigger');
   const messages = document.getElementById('js-messages');
   const userId = document.getElementById('js-user-id');
+  const errmsg = document.getElementById(`message-error-message`)
 
   const peer = (window.peer = new Peer({ key: '7f6811d4-2b08-4bd7-8be8-cd036923e473', }));
 
@@ -75,6 +76,25 @@ function massageData(user, text) {
       localText.value = '';
     }
   });
+
+  peer.on('error', console.error);
+
+    localText.oninput = handleChange;
+
+    function handleChange(e) {
+      if(localText.value.length >= 10){
+        errmsg.textContent = `入力可能文字数を超えています。`
+        console.log(`入力可能文字数を超えています。`)
+        sendTrigger.setAttribute("disabled", true);
+      }else{
+        sendTrigger.removeAttribute("disabled")
+        errmsg.textContent = ``
+      }
+
+      console.log(localText.value.length);
+    }
+
+
 })();
 
 const currentDate = () => {
