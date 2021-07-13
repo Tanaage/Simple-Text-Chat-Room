@@ -43,7 +43,7 @@ function massageData(user, text) {
 
     room.on('peerJoin', peerId => { messages.textContent += `=== ${peerId} joined ===\n`; });
 
-    room.on('data', ({ data, src }) => { messages.textContent += `@${data.user}(${src}): ${data.text}\n`; });// Show a message sent to the room and who sent
+    room.on('data', ({ data, src }) => { messages.textContent += `${currentDate()}:@${data.user}(${src}): ${data.text}\n`; });// Show a message sent to the room and who sent
 
     // for closing room members
     room.on('peerLeave', peerId => { messages.textContent += `=== ${peerId} left ===\n`; });
@@ -71,10 +71,35 @@ function massageData(user, text) {
       // Send message to all of the peers in the room via websocket
       room.send(msg);
 
-      messages.textContent += `@${user_name}(You): ${localText.value}\n`;
+      messages.textContent += `${currentDate()}:@${user_name}(You): ${localText.value}\n`;
       localText.value = '';
     }
   });
-
-  peer.on('error', console.error);
 })();
+
+const currentDate = () => {
+  let current = new Date();
+  current.setTime(current.getTime() + 60 * 60);
+
+  const year_str = current.getFullYear();
+  const month_str = 1 + current.getMonth();
+  const day_str = current.getDate();
+  const hour_str = current.getHours();
+  const minute_str = current.getMinutes();
+  const second_str = current.getSeconds();
+
+  let format_str = 'YYYY年MM月DD日 hh:mm:ss';
+  format_str = format_str.replace(/YYYY/g, String(year_str));
+  format_str = format_str.replace(/MM/g, String(month_str));
+  format_str = format_str.replace(/DD/g, String(day_str));
+  format_str = format_str.replace(/hh/g, zeroPadding(hour_str, 2));
+  format_str = format_str.replace(/mm/g, zeroPadding(minute_str, 2));
+  format_str = format_str.replace(/ss/g, zeroPadding(second_str, 2));
+
+  return format_str;
+}
+
+
+function zeroPadding(num, digits) {
+  return ("0".repeat(digits) + num).slice(-digits);
+}
