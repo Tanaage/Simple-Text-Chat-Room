@@ -12,8 +12,26 @@ const Peer = window.Peer;
 
   const peer = (window.peer = new Peer({ key: '7f6811d4-2b08-4bd7-8be8-cd036923e473', }));
 
+  const messagesArray = [];
+
   const msg = {type:"chat",user: "名無し", text:""}
   const systemMsg = {type:"system",text:""}
+
+
+
+
+  function　updateMsg(){
+    messages.textContent = "";
+    for(const item of messagesArray){
+      console.log(item);
+      if(item.type === "human"){
+      messages.textContent += `${item.date}:@${item.userName} (${item.src}):${item.msg}\n` 
+    }else{
+      messages.textContent += `${item.msg}`
+    }
+  }
+
+  }
 
   // Register join handler
   joinTrigger.addEventListener('click', () => {
@@ -35,7 +53,9 @@ const Peer = window.Peer;
 
 
     room.once('open', () => {
-      messages.textContent += '=== You joined ===\n';
+      messagesArray.push({msg:'=== You joined ===\n',type:"robot"});
+        updateMsg();
+      // messages.textContent += '=== You joined ===\n';
     });
 
     room.on('peerJoin', peerId => { messages.textContent += `=== ${peerId} joined ===\n`; });
@@ -43,7 +63,14 @@ const Peer = window.Peer;
     room.on('data', ({ data, src }) => { 
       console.log(data)
       if(data.type === `chat`){
-      messages.textContent += `${currentDate()}:@${data.user}(${src}): ${data.text}\n`;
+
+        messagesArray.push({date:currentDate(),userName:data.user,msg:data.text,src:src,type:"human"});
+        updateMsg();
+
+        console.log("tawaii",messagesArray);
+        // messageArray.push();
+
+      // messages.textContent += `${currentDate()}:@${data.user}(${src}): ${data.text}\n`;
       const systemMsg = {type:"system",text:"既読"}
       room.send(systemMsg);
     
@@ -57,7 +84,9 @@ const Peer = window.Peer;
     // for closing myself
     room.once('close', () => {
       sendTrigger.removeEventListener('click', onClickSend);
-      messages.textContent += '=== You left ===\n';
+      messagesArray.push({msg:'=== You left ===\n',type:"robot"});
+        updateMsg();
+      // messages.textContent += '=== You left ===\n';
     });
 
     // send by enter-key
@@ -76,8 +105,9 @@ const Peer = window.Peer;
       msg.user = user_name;
       // Send message to all of the peers in the room via websocket
       room.send(msg);
-
-      messages.textContent += `${currentDate()}:@${user_name}(You): ${localText.value}\n`;
+      messagesArray.push({date:currentDate(),userName:user_name,msg:localText.value,src:"you",type:"human"});
+      updateMsg();
+      // messages.textContent += `${currentDate()}:@${user_name}(You): ${localText.value}\n`;
       localText.value = '';
     }
   });
