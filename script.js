@@ -56,10 +56,10 @@ const Peer = window.Peer;
       user_name = '名無し';
     }
 
-  
-
-    const room = peer.joinRoom(roomId.value, { mode: 'mesh', });
     msg.user = user_name;
+  
+    const room = peer.joinRoom(roomId.value, { mode: 'mesh', });
+   
 
 
     room.once('open', () => {
@@ -68,8 +68,13 @@ const Peer = window.Peer;
       // messages.textContent += '=== You joined ===\n';
     });
 
-    room.on('peerJoin', peerId => { messages.textContent += `=== ${peerId} joined ===\n`; });
+    room.on('peerJoin', peerId => { 
+      messagesArray.push({msg:`=== ${peerId} joined ===\n`,type:"robot"});
+      updateMsg();
+      // messages.textContent += `=== ${peerId} joined ===\n`; 
+    });
 
+    
     room.on('data', ({ data, src }) => { 
       console.log(data);
       if(data.type === `chat`){
