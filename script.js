@@ -123,8 +123,8 @@ const Peer = window.Peer;
     });
 
     function onClickSend() {
-      msg.text = localText.value;
-      msg.user = user_name;
+      msg = {text:localText.value,user:user_name};
+      
       // Send message to all of the peers in the room via websocket
       room.send(msg);
       messagesArray.push({date:currentDate(),userName:user_name,msg:localText.value,src:"you",type:"human"});
