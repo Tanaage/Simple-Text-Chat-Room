@@ -74,15 +74,13 @@ const Peer = window.Peer;
       // messages.textContent += `=== ${peerId} joined ===\n`; 
     });
 
-    
+
     room.on('data', ({ data, src }) => { 
-      console.log(data);
       if(data.type === `chat`){
 
         messagesArray.push({date:currentDate(),userName:data.user,msg:data.text,src:src,type:"human"});
         updateMsg();
 
-        console.log("tawaii",messagesArray);
         // messageArray.push();
 
       // messages.textContent += `${currentDate()}:@${data.user}(${src}): ${data.text}\n`;
@@ -94,7 +92,11 @@ const Peer = window.Peer;
 
 
     // for closing room members
-    room.on('peerLeave', peerId => { messages.textContent += `=== ${peerId} left ===\n`; });
+    room.on('peerLeave', peerId => { 
+      messagesArray.push({msg:`=== ${peerId} left ===\n`,type:"robot"});
+      updateMsg();
+      // messages.textContent += `=== ${peerId} left ===\n`; 
+    });
 
     
     // for closing myself
