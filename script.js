@@ -19,7 +19,7 @@ const Peer = window.Peer;
 
 
 
-
+// update message
   function　updateMsg(){
     messages.textContent = "";
     for(const item of messagesArray){
@@ -33,13 +33,21 @@ const Peer = window.Peer;
 
   }
 
+  leaveTrigger.setAttribute("disabled", true);
+
   // Register join handler
   joinTrigger.addEventListener('click', () => {
     // Note that you need to ensure the peer has connected to signaling server
     // before using methods of peer instance.
     if (!peer.open) {
+      return;  
+    }
+
+    if (roomId.value ==='') {
       return;
     }
+    joinTrigger.setAttribute("disabled", true);
+    leaveTrigger.removeAttribute("disabled",);
 
     userId.disabled = true;
     let user_name = userId.value;
@@ -47,6 +55,8 @@ const Peer = window.Peer;
     if (user_name == '') {
       user_name = '名無し';
     }
+
+  
 
     const room = peer.joinRoom(roomId.value, { mode: 'mesh', });
     msg.user = user_name;
@@ -61,7 +71,7 @@ const Peer = window.Peer;
     room.on('peerJoin', peerId => { messages.textContent += `=== ${peerId} joined ===\n`; });
 
     room.on('data', ({ data, src }) => { 
-      console.log(data)
+      console.log(data);
       if(data.type === `chat`){
 
         messagesArray.push({date:currentDate(),userName:data.user,msg:data.text,src:src,type:"human"});
@@ -81,6 +91,7 @@ const Peer = window.Peer;
     // for closing room members
     room.on('peerLeave', peerId => { messages.textContent += `=== ${peerId} left ===\n`; });
 
+    
     // for closing myself
     room.once('close', () => {
       sendTrigger.removeEventListener('click', onClickSend);
@@ -98,7 +109,11 @@ const Peer = window.Peer;
     });
 
     sendTrigger.addEventListener('click', onClickSend);
-    leaveTrigger.addEventListener('click', () => { userId.disabled = false; room.close(), { once: true } });
+    leaveTrigger.addEventListener('click', () => { 
+      userId.disabled = false; room.close(), { once: true } 
+      joinTrigger.removeAttribute("disabled");
+      leaveTrigger.setAttribute("disabled", true);
+    });
 
     function onClickSend() {
       msg.text = localText.value;
@@ -119,10 +134,10 @@ const Peer = window.Peer;
     function handleChange(e) {
       if(localText.value.length >= 10){
         errmsg.textContent = `入力可能文字数を超えています。`
-        console.log(`入力可能文字数を超えています。`)
+        console.log(`入力可能文字数を超えています。`);
         sendTrigger.setAttribute("disabled", true);
       }else{
-        sendTrigger.removeAttribute("disabled")
+        sendTrigger.removeAttribute("disabled");
         errmsg.textContent = ``
       }
 
@@ -132,6 +147,7 @@ const Peer = window.Peer;
 
 })();
 
+//get system date 
 const currentDate = () => {
   let current = new Date();
   current.setTime(current.getTime() + 60 * 60);
