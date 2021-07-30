@@ -101,6 +101,7 @@ const Peer = window.Peer;
     
     // for closing myself
     room.once('close', () => {
+      console.log(`tanawaii`);
       sendTrigger.removeEventListener('click', onClickSend);
       messagesArray.push({msg:'=== You left ===\n',type:"robot"});
         updateMsg();
@@ -117,10 +118,10 @@ const Peer = window.Peer;
 
     sendTrigger.addEventListener('click', onClickSend);
     leaveTrigger.addEventListener('click', () => { 
-      userId.disabled = false; room.close(), { once: true } 
+      userId.disabled = false; room.close();  
       joinTrigger.removeAttribute("disabled");
       leaveTrigger.setAttribute("disabled", true);
-    });
+    },{ once: true });
 
     function onClickSend() {
      const msg = {text:localText.value,user:user_name,type:"chat"};
