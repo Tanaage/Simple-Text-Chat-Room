@@ -14,7 +14,7 @@ const Peer = window.Peer;
 
   const messagesArray = [];
 
-  const msg = {type:"chat",user: "名無し", text:""}
+  // const msg = {type:"chat",user: "名無し", text:""}
   const systemMsg = {type:"system",text:""}
 
 
@@ -56,7 +56,7 @@ const Peer = window.Peer;
       user_name = '名無し';
     }
 
-    msg.user = user_name;
+    // msg.user = user_name;
   
     const room = peer.joinRoom(roomId.value, { mode: 'mesh', });
    
@@ -123,7 +123,7 @@ const Peer = window.Peer;
     });
 
     function onClickSend() {
-      msg = {text:localText.value,user:user_name};
+     const msg = {text:localText.value,user:user_name,type:"chat"};
       
       // Send message to all of the peers in the room via websocket
       room.send(msg);
