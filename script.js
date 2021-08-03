@@ -9,7 +9,7 @@ const Peer = window.Peer;
   const messages = document.getElementById('js-messages');
   const userId = document.getElementById('js-user-id');
   const errmsg = document.getElementById(`message-error-message`)
-
+  const roomName = document.getElementById(`room-name`);
   const peer = (window.peer = new Peer({ key: '7f6811d4-2b08-4bd7-8be8-cd036923e473', }));
 
   const messagesArray = [];
@@ -46,6 +46,7 @@ const Peer = window.Peer;
     if (roomId.value ==='') {
       return;
     }
+    roomName.textContent=roomId.value;
     joinTrigger.setAttribute("disabled", true);
     leaveTrigger.removeAttribute("disabled",);
 

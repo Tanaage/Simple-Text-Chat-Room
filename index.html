@@ -12,6 +12,9 @@
       #message-error-message{
         color :crimson;
       }
+      #room-name-display{
+        display: flex;
+      }
     </style>
 </head>
 
@@ -24,7 +27,10 @@
         <input type="text" placeholder="名無し" id="js-user-id">
       </div>
       <div>
+        <div id="room-name-display">
         <h2>Room:</h2>
+        <h2 id="room-name"></h2>
+        </div>
         <input type="text" placeholder="Room Name" id="js-room-id">
         <button id="js-join-trigger">Join</button>
         <button id="js-leave-trigger">Leave</button>
