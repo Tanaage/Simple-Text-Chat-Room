@@ -11,29 +11,38 @@ const Peer = window.Peer;
   const errmsg = document.getElementById(`message-error-message`)
   const roomName = document.getElementById(`room-name`);
   const userName = document.getElementById(`user-name`);
-  
   const peer = (window.peer = new Peer({ key: '7f6811d4-2b08-4bd7-8be8-cd036923e473', }));
+  const joinedUsersAll = document.getElementById(`all-users`);
 
   const messagesArray = [];
+  let joinedUsers = [];
+
 
   // const msg = {type:"chat",user: "名無し", text:""}
-  const systemMsg = {type:"system",text:""}
+  const systemMsg = { type: "system", text: "" }
 
 
 
-// update message
-  function　updateMsg(){
+  // update message
+  function updateMsg() {
     messages.textContent = "";
-    for(const item of messagesArray){
+    for (const item of messagesArray) {
       console.log(item);
-      if(item.type === "human"){
-      messages.textContent += `${item.date}:@${item.userName} (${item.src}):${item.msg}\n` 
-    }else{
-      messages.textContent += `${item.msg}`
+      if (item.type === "human") {
+        messages.textContent += `${item.date}:@${item.userName} (${item.src}):${item.msg}\n`
+      } else {
+        messages.textContent += `${item.msg}`
+      }
     }
   }
 
-  }
+   function joinedUserName(){
+     for (const item of joinedUsers){
+      console.log(item,"tanawaii3");
+      joinedUsersAll.textContent +=`${item.name},`
+      console.log(joinedUsersAll);
+     }
+   }
 
   leaveTrigger.setAttribute("disabled", true);
 
@@ -42,13 +51,13 @@ const Peer = window.Peer;
     // Note that you need to ensure the peer has connected to signaling server
     // before using methods of peer instance.
     if (!peer.open) {
-      return;  
-    }
-
-    if (roomId.value ==='') {
       return;
     }
-    roomName.textContent=roomId.value;
+
+    if (roomId.value === '') {
+      return;
+    }
+    roomName.textContent = roomId.value;
     joinTrigger.setAttribute("disabled", true);
     leaveTrigger.removeAttribute("disabled",);
 
@@ -58,56 +67,62 @@ const Peer = window.Peer;
     if (user_name == '') {
       user_name = '名無し';
     }
-    userName.textContent =user_name;
+    userName.textContent = user_name;
     // msg.user = user_name;
-  
+
     const room = peer.joinRoom(roomId.value, { mode: 'mesh', });
-   
+
 
 
     room.once('open', () => {
-      messagesArray.push({msg:'=== You joined ===\n',type:"robot"});
-        updateMsg();
+      messagesArray.push({ msg: '=== You joined ===\n', type: "robot" });
+      updateMsg();
       // messages.textContent += '=== You joined ===\n';
     });
 
-    room.on('peerJoin', peerId => { 
-      messagesArray.push({msg:`=== ${peerId} joined ===\n`,type:"robot"});
+    room.on('peerJoin', peerId => {
+      messagesArray.push({ msg: `=== ${peerId} joined ===\n`, type: "robot" });
       updateMsg();
+      joinedUsers.push({name:userName,id:peerId});
+      console.log(joinedUsers,"tanawaii");
+      joinedUserName();
       // messages.textContent += `=== ${peerId} joined ===\n`; 
     });
 
 
-    room.on('data', ({ data, src }) => { 
-      if(data.type === `chat`){
+    room.on('data', ({ data, src }) => {
+      if (data.type === `chat`) {
 
-        messagesArray.push({date:currentDate(),userName:data.user,msg:data.text,src:src,type:"human"});
+        messagesArray.push({ date: currentDate(), userName: data.user, msg: data.text, src: src, type: "human" });
         updateMsg();
 
         // messageArray.push();
 
-      // messages.textContent += `${currentDate()}:@${data.user}(${src}): ${data.text}\n`;
-      const systemMsg = {type:"system",text:"既読"}
-      room.send(systemMsg);
-    
-    }
-     });// Show a message sent to the room and who sent
+        // messages.textContent += `${currentDate()}:@${data.user}(${src}): ${data.text}\n`;
+        const systemMsg = { type: "system", text: "既読" }
+        room.send(systemMsg);
+
+      }
+    });// Show a message sent to the room and who sent
 
 
     // for closing room members
-    room.on('peerLeave', peerId => { 
-      messagesArray.push({msg:`=== ${peerId} left ===\n`,type:"robot"});
+    room.on('peerLeave', peerId => {
+      messagesArray.push({ msg: `=== ${peerId} left ===\n`, type: "robot" });
       updateMsg();
+      joinedUsers =joinedUsers.filter( (item) =>{return item.peerId !== peerId});
+      console.log(joinedUsers,"tanawaii2");
+      joinedUserName();
       // messages.textContent += `=== ${peerId} left ===\n`; 
     });
 
-    
+
     // for closing myself
     room.once('close', () => {
       console.log(`tanawaii`);
       sendTrigger.removeEventListener('click', onClickSend);
-      messagesArray.push({msg:'=== You left ===\n',type:"robot"});
-        updateMsg();
+      messagesArray.push({ msg: '=== You left ===\n', type: "robot" });
+      updateMsg();
       // messages.textContent += '=== You left ===\n';
     });
 
@@ -120,18 +135,18 @@ const Peer = window.Peer;
     });
 
     sendTrigger.addEventListener('click', onClickSend);
-    leaveTrigger.addEventListener('click', () => { 
-      userId.disabled = false; room.close();  
+    leaveTrigger.addEventListener('click', () => {
+      userId.disabled = false; room.close();
       joinTrigger.removeAttribute("disabled");
       leaveTrigger.setAttribute("disabled", true);
-    },{ once: true });
+    }, { once: true });
 
     function onClickSend() {
-     const msg = {text:localText.value,user:user_name,type:"chat"};
-      
+      const msg = { text: localText.value, user: user_name, type: "chat" };
+
       // Send message to all of the peers in the room via websocket
       room.send(msg);
-      messagesArray.push({date:currentDate(),userName:user_name,msg:localText.value,src:"you",type:"human"});
+      messagesArray.push({ date: currentDate(), userName: user_name, msg: localText.value, src: "you", type: "human" });
       updateMsg();
       // messages.textContent += `${currentDate()}:@${user_name}(You): ${localText.value}\n`;
       localText.value = '';
@@ -140,20 +155,20 @@ const Peer = window.Peer;
 
   peer.on('error', console.error);
 
-    localText.oninput = handleChange;
+  localText.oninput = handleChange;
 
-    function handleChange(e) {
-      if(localText.value.length >= 10){
-        errmsg.textContent = `入力可能文字数を超えています。`
-        console.log(`入力可能文字数を超えています。`);
-        sendTrigger.setAttribute("disabled", true);
-      }else{
-        sendTrigger.removeAttribute("disabled");
-        errmsg.textContent = ``
-      }
-
-      console.log(localText.value.length);
+  function handleChange(e) {
+    if (localText.value.length >= 10) {
+      errmsg.textContent = `入力可能文字数を超えています。`
+      console.log(`入力可能文字数を超えています。`);
+      sendTrigger.setAttribute("disabled", true);
+    } else {
+      sendTrigger.removeAttribute("disabled");
+      errmsg.textContent = ``
     }
+
+    console.log(localText.value.length);
+  }
 
 
 })();
