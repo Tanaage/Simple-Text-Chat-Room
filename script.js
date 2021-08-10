@@ -37,9 +37,10 @@ const Peer = window.Peer;
   }
 
    function joinedUserName(){
+    joinedUsersAll.textContent ="";
      for (const item of joinedUsers){
       console.log(item,"tanawaii3");
-      joinedUsersAll.textContent +=`${item.name},`
+      joinedUsersAll.textContent +=`${item.userName},`
       console.log(joinedUsersAll);
      }
    }
@@ -67,6 +68,9 @@ const Peer = window.Peer;
     if (user_name == '') {
       user_name = '名無し';
     }
+
+    joinedUsers.push({userName:user_name,peerId:peer.id});
+
     userName.textContent = user_name;
     // msg.user = user_name;
 
@@ -77,15 +81,16 @@ const Peer = window.Peer;
     room.once('open', () => {
       messagesArray.push({ msg: '=== You joined ===\n', type: "robot" });
       updateMsg();
+      const testMsg = {type:"userStatus",user:user_name}
+      room.send(testMsg);
       // messages.textContent += '=== You joined ===\n';
     });
 
     room.on('peerJoin', peerId => {
       messagesArray.push({ msg: `=== ${peerId} joined ===\n`, type: "robot" });
       updateMsg();
-      joinedUsers.push({name:userName,id:peerId});
-      console.log(joinedUsers,"tanawaii");
-      joinedUserName();
+      room.send({type:"commonUserStatus",joinedUsers});
+      console.log(joinedUsers,"tanawaii5");
       // messages.textContent += `=== ${peerId} joined ===\n`; 
     });
 
@@ -102,7 +107,17 @@ const Peer = window.Peer;
         const systemMsg = { type: "system", text: "既読" }
         room.send(systemMsg);
 
-      }
+      }else if(data.type === `userStatus`){
+        joinedUsers.push({userName:data.user,peerId:src});
+        console.log(joinedUsers,"tanawaii4");
+        joinedUserName();
+
+      }else if(data.type ==='commonUserStatus'){
+        console.log(joinedUsers,"tanawaii6");
+        joinedUserName();
+      };
+
+
     });// Show a message sent to the room and who sent
 
 
