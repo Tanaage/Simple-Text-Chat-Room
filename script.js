@@ -69,6 +69,7 @@ const Peer = window.Peer;
       user_name = '名無し';
     }
 
+    joinedUsers = [];
     joinedUsers.push({userName:user_name,peerId:peer.id});
 
     userName.textContent = user_name;
@@ -140,6 +141,7 @@ const Peer = window.Peer;
       sendTrigger.removeEventListener('click', onClickSend);
       messagesArray.push({ msg: '=== You left ===\n', type: "robot" });
       updateMsg();
+      joinedUsersAll.textContent ="";
       // messages.textContent += '=== You left ===\n';
     });
 
