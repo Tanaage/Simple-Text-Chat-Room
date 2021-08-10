@@ -89,8 +89,7 @@ const Peer = window.Peer;
     room.on('peerJoin', peerId => {
       messagesArray.push({ msg: `=== ${peerId} joined ===\n`, type: "robot" });
       updateMsg();
-      room.send({type:"commonUserStatus",joinedUsers});
-      console.log(joinedUsers,"tanawaii5");
+      
       // messages.textContent += `=== ${peerId} joined ===\n`; 
     });
 
@@ -111,9 +110,12 @@ const Peer = window.Peer;
         joinedUsers.push({userName:data.user,peerId:src});
         console.log(joinedUsers,"tanawaii4");
         joinedUserName();
+        room.send({type:"commonUserStatus",joinedUsers});
+        console.log(joinedUsers,"tanawaii5");
 
       }else if(data.type ==='commonUserStatus'){
-        console.log(joinedUsers,"tanawaii6");
+        joinedUsers = data.joinedUsers;
+        console.log(data,"tanawaii6");
         joinedUserName();
       };
 
