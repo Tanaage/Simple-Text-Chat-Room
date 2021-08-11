@@ -73,6 +73,7 @@ const Peer = window.Peer;
 
     joinedUsers = [];
     joinedUsers.push({userName:user_name,peerId:peer.id});
+    joinedUserName();
 
     userName.textContent = user_name;
     // msg.user = user_name;
