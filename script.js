@@ -98,7 +98,6 @@ const Peer = window.Peer;
 
 
     room.on('data', ({ data, src }) => {
-      console.log(data,"tanawaii7");
       if (data.type === `chat`) {
 
         messagesArray.push({ date: currentDate(), userName: data.user, msg: data.text, src: src, type: "human" });
@@ -121,7 +120,8 @@ const Peer = window.Peer;
         joinedUsers = data.joinedUsers;
         console.log(data,"tanawaii6");
         joinedUserName();
-      }else if(data.type === 'kick'){
+      }else if(data.type ==='kick'){
+        console.log(data,"tanawaii7");
         if(data.peerId === user_name){
           userId.disabled = false; room.close();
           joinTrigger.removeAttribute("disabled");
@@ -169,7 +169,7 @@ const Peer = window.Peer;
       leaveTrigger.setAttribute("disabled", true);
     }, { once: true });
 
-    userKickTrigger.addEventListener('click', kick("tanaka"));
+    userKickTrigger.addEventListener('click', {peerId:"tanaka",handleEvent:kick});
 
     function onClickSend() {
       const msg = { text: localText.value, user: user_name, type: "chat" };
@@ -182,10 +182,10 @@ const Peer = window.Peer;
       localText.value = '';
     }
 
-    function kick(peerId){
-      room.send( {type:"kick",peerId:peerId});
+    function kick(){
+      room.send({type:"kick",peerId:this.peerId});
     }
-    
+
   });
 
   peer.on('error', console.error);
