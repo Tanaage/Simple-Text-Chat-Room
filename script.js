@@ -185,7 +185,8 @@ const Peer = window.Peer;
 
     function kick(){
       room.send({type:"kick",peerId:this.peerId});
-    }
+      alert(`ユーザ:${this.peerId}が追放されました。`);
+    };
 
   });
 
